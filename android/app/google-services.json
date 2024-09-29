@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "825494811496",
+    "project_id": "calvary-karunya-f2832",
+    "storage_bucket": "calvary-karunya-f2832.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825494811496:android:85062b57a7403ba7529cdd",
+        "android_client_info": {
+          "package_name": "com.example.calvary_karunya_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO4CDCuXFLQBP5PkfX0g0TLoD76mCsYvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

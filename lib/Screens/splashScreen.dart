@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterplayer/Screens/homepage.dart';
+import 'package:flutterplayer/Screens/mainScren.dart';
 
 import 'package:flutterplayer/Screens/videoplayer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,9 +36,10 @@ class _splashscreenState extends State<splashscreen> {
     greetingMessage = getGreetingMessage();
     fetchBibleVerse(); // Fetch the Bible verse on init
     // Force landscape mode
-    Timer(Duration(seconds: 5 ), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => RTMPPlayerScreen())));
-     });
+    Timer(Duration(seconds: 5), () {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: ((context) => MainScreen())));
+    });
   }
 
   Future<void> fetchBibleVerse() async {
@@ -100,20 +103,21 @@ class _splashscreenState extends State<splashscreen> {
                           borderRadius: BorderRadius.circular(10),
                           color: Theme.of(context).scaffoldBackgroundColor,
                         ),
-                        child: 
-                        // Text(
-                        //   greetingMessage,
-                        //   style: const TextStyle(
-                        //       color: Colors.black54,
-                        //       fontSize: 30,
-                        //       fontWeight: FontWeight.bold,
-                        //       fontFamily: "Poppins"),
-                        // ),
-                          buildGradientText(
-              greetingMessage, 
-              LinearGradient(colors: [Colors.orange, Colors.deepPurple]),
-              40,
-            ),
+                        child:
+                            // Text(
+                            //   greetingMessage,
+                            //   style: const TextStyle(
+                            //       color: Colors.black54,
+                            //       fontSize: 30,
+                            //       fontWeight: FontWeight.bold,
+                            //       fontFamily: "Poppins"),
+                            // ),
+                            buildGradientText(
+                          greetingMessage,
+                          LinearGradient(
+                              colors: [Colors.orange, Colors.deepPurple]),
+                          40,
+                        ),
                       ),
                       const SizedBox(
                         height: 20,
@@ -157,7 +161,7 @@ class _splashscreenState extends State<splashscreen> {
                                   GestureDetector(
                                     onTap: _launchInstagram,
                                     child: buildGradientIcon(
-                                       FontAwesomeIcons.instagram,
+                                      FontAwesomeIcons.instagram,
                                       LinearGradient(
                                           colors: [Colors.purple, Colors.blue]),
                                     ),
@@ -284,19 +288,19 @@ Widget buildGradientIcon(IconData icon, Gradient gradient) {
   );
 }
 
-  // Function to create gradient text
-  Widget buildGradientText(String text, Gradient gradient, double fontSize) {
-    return ShaderMask(
-      shaderCallback: (bounds) => gradient.createShader(
-        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+// Function to create gradient text
+Widget buildGradientText(String text, Gradient gradient, double fontSize) {
+  return ShaderMask(
+    shaderCallback: (bounds) => gradient.createShader(
+      Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+    ),
+    child: Text(
+      text,
+      style: TextStyle(
+        color: Colors.white, // This will be overridden by the gradient
+        fontSize: fontSize,
+        fontWeight: FontWeight.bold,
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.white, // This will be overridden by the gradient
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}

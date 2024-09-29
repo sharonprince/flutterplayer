@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:flutterplayer/Screens/homepage.dart';
+import 'package:flutterplayer/Screens/mainScren.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 
@@ -20,7 +22,9 @@ class _RTMPPlayerScreenState extends State<RTMPPlayerScreen> {
     super.initState();
     _vlcPlayerController = VlcPlayerController.network(
       // 'rtmp://your_rtmp_url_here',
-      'rtmp://62.72.43.50/live/jaden', // Replace with your RTMP URL
+      // 'rtmp://62.72.43.50/live/jaden',
+     'https://media.w3.org/2010/05/sintel/trailer.mp4',
+      // // Replace with your RTMP URL
       autoPlay: true,
       onInit: () {
         _vlcPlayerController.addListener(_onPlayerStateChange);
@@ -72,9 +76,14 @@ class _RTMPPlayerScreenState extends State<RTMPPlayerScreen> {
 
   @override
   void dispose() {
+           SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     _vlcPlayerController.removeListener(_onPlayerStateChange);
     _vlcPlayerController.dispose();
     super.dispose();
+
+
   }
 
   void _togglePlayPause() {
@@ -110,8 +119,9 @@ class _RTMPPlayerScreenState extends State<RTMPPlayerScreen> {
             child: IconButton(
               icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
               onPressed: () {
-                   SystemNavigator.pop();
-                Navigator.of(context).pop();
+                  //  SystemNavigator.pop();
+                // Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => MainScreen())));
               },
             ),
           ),

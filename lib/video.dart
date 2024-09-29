@@ -100,7 +100,7 @@ class _RTMPPlayerScreenState extends State<RTMPPlayerScreen11> {
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
-                  SystemNavigator.pop();
+                  // SystemNavigator.pop();
                 Navigator.of(context).pop();
               },
             ),

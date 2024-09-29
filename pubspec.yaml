@@ -32,10 +32,18 @@ dependencies:
     sdk: flutter
   flutter_vlc_player: 
   screen_brightness: 
-  flutter_volume_controller: 
+  flutter_volume_controller:
+  volume_controller: 
   wakelock_plus: ^1.2.8
   lottie:
   http: ^0.13.5
+  carousel_slider:
+  image_picker: ^1.1.2
+  firebase_core: ^3.4.0
+  cloud_firestore: 
+  firebase_storage: 
+  random_string: ^2.3.1
+  shared_preferences: ^2.0.0
  
 
 
