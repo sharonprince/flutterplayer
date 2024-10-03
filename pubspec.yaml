@@ -44,6 +44,15 @@ dependencies:
   firebase_storage: 
   random_string: ^2.3.1
   shared_preferences: ^2.0.0
+  flutter_svg: # Used to render svg images
+   # Used to include google fonts
+  flutter_rating_bar:  # Used for show product star ratings
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.7
+  get: ^4.6.6
+  dropdown_button2: ^2.3.9  
+  get_storage: ^2.1.1
+ 
  
 
 
@@ -52,6 +61,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   font_awesome_flutter: ^10.7.0
   url_launcher: ^6.3.0
+  google_fonts: ^4.0.4
 
 
 dev_dependencies:

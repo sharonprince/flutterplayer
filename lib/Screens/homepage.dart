@@ -1,22 +1,24 @@
 import 'dart:convert';
-import 'dart:ffi';
+
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:flutterplayer/Screens/videoplayer.dart';
+import 'package:flutterplayer/Screens/homepage/videoplayer.dart';
 import 'package:flutterplayer/Widgets/textColor.dart';
+import 'package:flutterplayer/Widgets/config.dart';
 import 'package:flutterplayer/video.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage111 extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage111> {
   late VlcPlayerController _vlcPlayerController;
   bool _isFullScreen = false;
   String bibleVerse = "Loading Bible verse..."; // Default loading text
@@ -36,7 +38,7 @@ class _HomePageState extends State<HomePage> {
      _loadUserName();
     greetingMessage = getGreetingMessage();
     fetchBibleVerse();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
     _vlcPlayerController = VlcPlayerController.network(
       'https://media.w3.org/2010/05/sintel/trailer.mp4',
       autoPlay: true,
@@ -66,7 +68,8 @@ class _HomePageState extends State<HomePage> {
       } else {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
         SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+             SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+      
       }
     });
   }
@@ -74,6 +77,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+      title: Center(child: Text("Calvary Karunya")),
+         actions: [
+          InkWell(
+            onTap: () {},
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              child: SvgPicture.asset(
+                'assets/icons/cart.svg',
+              ),
+            ),
+          )
+        ],
+      ),
+
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(20),
@@ -86,15 +105,18 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     buildGradientText(
                       "Hi "+_userName+'\n'+ greetingMessage,
-                      LinearGradient(colors: [Colors.black, Colors.black]),
+                      LinearGradient(colors: [Colors.purple, Colors.red]),
                       25,
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        "assets/images/logo.jpeg",
-                        height: 150,
-                        width: 150,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          "assets/images/logo.jpeg",
+                          height: 150,
+                          width: 150,
+                        ),
                       ),
                     )
                   ],
@@ -113,33 +135,29 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Container(
                     child: Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Column(
                         children: [
+                          
                           buildGradientText(
-                            "Verse of the day",
+                            "Word for Today",
                             LinearGradient(
                                 colors: [Colors.red, Colors.deepPurple]),
-                            25,
+                            15,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              bibleVerse,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-                              maxLines: 5,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins"),
-                            ),
+                          SizedBox(height: 10,),
+                            buildGradientText(
+                            bibleVerse,
+                            LinearGradient(
+                                colors: [Colors.black, Colors.black]),
+                            15,
                           ),
+                      
                         ],
                       ),
                     ),
                   ),
+                  
                 ),
               ),
               SizedBox(

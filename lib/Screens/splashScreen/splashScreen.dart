@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutterplayer/Screens/homepage.dart';
-import 'package:flutterplayer/Screens/mainScren.dart';
+import 'package:flutterplayer/Screens/mainScreen.dart';
 
-import 'package:flutterplayer/Screens/videoplayer.dart';
+import 'package:flutterplayer/Screens/homepage/videoplayer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +39,7 @@ class _splashscreenState extends State<splashscreen> {
     Timer(Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: ((context) => MainScreen())));
+   
     });
   }
 

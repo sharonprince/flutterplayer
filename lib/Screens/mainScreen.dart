@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterplayer/Screens/aboutus.dart';
+import 'package:flutterplayer/Screens/aboutus/aboutus.dart';
 import 'package:flutterplayer/Screens/homepage.dart';
-import 'package:flutterplayer/Screens/template.dart';
+import 'package:flutterplayer/Screens/homepage/HomePage.dart';
+import 'package:flutterplayer/Screens/schedule/schedulePage.dart';
+import 'package:flutterplayer/Widgets/config.dart';
+import 'package:flutterplayer/controller/Admin/addDetails.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -13,15 +16,25 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
     HomePage(),
-   SchedulePage(),
-  AboutUs()
+   schedulepage(),
+  AboutUs(),
+  // adddetails()
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: kPrimaryColor,
+        // unselectedItemColor: Colors.black,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
@@ -32,8 +45,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Schedule'),
           BottomNavigationBarItem(icon: Icon(Icons.contact_page), label: 'About Us'),
+            // BottomNavigationBarItem(icon: Icon(Icons.add_box), label: 'Add'),
         ],
       ),
     );
   }
 }
+

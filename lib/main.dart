@@ -1,10 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterplayer/Screens/homepage/HomePage.dart';
+import 'package:flutterplayer/Screens/schedule/schedulePage.dart';
+import 'package:flutterplayer/Widgets/config.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutterplayer/Screens/Login/loginpage.dart';
 import 'package:flutterplayer/Screens/homepage.dart';
-import 'package:flutterplayer/Screens/splashScreen.dart';
+import 'package:flutterplayer/Screens/splashScreen/splashScreen.dart';
 
-import 'package:flutterplayer/Screens/videoplayer.dart';
+import 'package:flutterplayer/Screens/homepage/videoplayer.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async{
@@ -14,6 +20,7 @@ await Firebase.initializeApp();
   String? userName = prefs.getString('userName');
 
   runApp(MyApp(startPage: userName == null ? LoginPage() : splashscreen()));
+    // runApp(MyApp(startPage: userName == null ? LoginPage() : LoginPage()));
   // runApp(const MyApp());
 }
 
@@ -26,6 +33,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: kPrimaryColor,
+          textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
+        ),
     
       home: startPage,
       routes: {

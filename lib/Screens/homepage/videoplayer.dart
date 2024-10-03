@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:flutterplayer/Screens/homepage.dart';
-import 'package:flutterplayer/Screens/mainScren.dart';
+import 'package:flutterplayer/Screens/mainScreen.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 
@@ -78,7 +78,7 @@ class _RTMPPlayerScreenState extends State<RTMPPlayerScreen> {
   void dispose() {
            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
         SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+            // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     _vlcPlayerController.removeListener(_onPlayerStateChange);
     _vlcPlayerController.dispose();
     super.dispose();
@@ -121,6 +121,8 @@ class _RTMPPlayerScreenState extends State<RTMPPlayerScreen> {
               onPressed: () {
                   //  SystemNavigator.pop();
                 // Navigator.of(context).pop();
+                     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => MainScreen())));
               },
             ),

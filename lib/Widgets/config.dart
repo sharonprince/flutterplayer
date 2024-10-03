@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutterplayer/colors.dart';
+import 'package:flutterplayer/Widgets/colors.dart';
 
 var lightTheme = ThemeData(
   useMaterial3: true,
@@ -65,3 +65,12 @@ var lightTheme = ThemeData(
         color: labelColor),
   ),
 );
+
+
+
+const kPrimaryColor = Color(0xFFFF1031);
+const kWhite = Colors.white;
+const kTextColor = Color(0xFF707070);
+const kTextLightColor = Color(0xFF949098);
+
+const kDefaultPadding = 25.0;
