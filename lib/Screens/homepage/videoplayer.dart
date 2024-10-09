@@ -22,8 +22,8 @@ class _RTMPPlayerScreenState extends State<RTMPPlayerScreen> {
     super.initState();
     _vlcPlayerController = VlcPlayerController.network(
       // 'rtmp://your_rtmp_url_here',
-      // 'rtmp://62.72.43.50/live/jaden',
-     'https://media.w3.org/2010/05/sintel/trailer.mp4',
+      'rtmp://62.72.43.50/live/jaden',
+    //  'https://media.w3.org/2010/05/sintel/trailer.mp4',
       // // Replace with your RTMP URL
       autoPlay: true,
       onInit: () {

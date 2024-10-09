@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterplayer/Screens/Admin/adminMainPage.dart';
+import 'package:flutterplayer/Screens/mainScreen.dart';
 import 'package:flutterplayer/controller/DataBaseMethods/DatabaseMethods.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
@@ -25,8 +27,17 @@ class _addRecipeeState extends State<adddetails> {
     '9Am - 10Am ',
     '10Am - 11Am ',
     '11Am - 12Am ',
-    '12Pm - 1Pm ',
-
+    '1Pm - 2Pm ',
+    '2Pm - 3Pm ',
+    '3Pm - 4Pm ',
+    '4Pm - 5Pm ',
+    '5Pm - 6Pm ',
+    '7Pm - 8Pm ',
+    '8Pm - 9Pm ',
+    '9Pm - 10Pm ',
+    '10Pm - 11Pm ',
+    '11Pm - 12Am ',
+  
     
   ];
   TextEditingController nameController = new TextEditingController();
@@ -58,7 +69,7 @@ class _addRecipeeState extends State<adddetails> {
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(
-              "Recipe has uploaded !!!!",
+              "Data has uploaded !!!!",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
@@ -80,6 +91,19 @@ class _addRecipeeState extends State<adddetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        title: Text('Add Data to Cloud'),
+        actions: [ 
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: GestureDetector(
+            onTap: (){
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) =>MainScreen())));
+            },
+            child: Text('Back'),),
+        ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -91,7 +115,7 @@ class _addRecipeeState extends State<adddetails> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => MainScreen())));
                       },
                       child: Icon(Icons.arrow_back_ios_new_rounded),
                     ),

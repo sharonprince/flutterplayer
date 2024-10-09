@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
              
-        const SizedBox(height: 150),
+        const SizedBox(height: 50),
              // logo
               const Icon(
                 Icons.lock,
@@ -44,11 +44,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
                 //  Container(child: Image.asset("assets/images/transperentlogo.png",)),
 
-                                  const SizedBox(height: 100),
+                                  const SizedBox(height: 50),
       
              Expanded(child: SingleChildScrollView(
                child: Container(
                 width: double.infinity,
+                height: 990,
                   decoration: BoxDecoration(
                     color: kWhite,
                     borderRadius: BorderRadius.only(
@@ -57,60 +58,64 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      child: Column( 
-                        children: [ 
-                          const SizedBox(height: 50),
-                          Text(
-                      'Welcome back you\'ve been missed!',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                      ),
-                                    ),
+                    child: Center(
+                      child: Container(
+                        child: Column( 
+                          children: [ 
                             
-                                    const SizedBox(height: 40),
-                      MyTextField(
-                      controller: usernameController,
-                      hintText: 'Enter your Name',
-                      obscureText: false,
-                                    ),
-                            
-                                    const SizedBox(height: 10),
-                      
-                                    const SizedBox(height: 10),
-                            
-                                
-                            
-                                    const SizedBox(height: 25),
-                            
-                                    // sign in button
-                                    MyButton(
-                      onTap: signUserIn,
-                                    ),
-                            
-                                    const SizedBox(height: 50),
-                            
-                                   
-                            
-                                    const SizedBox(height: 150),
-                             Text(
-                      'Calvary Karunya Digital Gospel',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                      ),
-                                    ),
-                                   
-                            
-                                    const SizedBox(height:30),
-                               
-                            
-                      
-                      
-                        ],
+                            const SizedBox(height: 50),
+                            Text(
+                        'Welcome back you\'ve been missed!',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                        ),
+                                      ),
+                              
+                                      const SizedBox(height: 40),
+                                          const SizedBox(height: 20),
+                        MyTextField(
+                        controller: usernameController,
+                        hintText: 'Enter your Name',
+                        obscureText: false,
+                                      ),
+                              
+                                      const SizedBox(height: 10),
+                        
+                                      const SizedBox(height: 10),
+                              
+                                  
+                              
+                                      const SizedBox(height: 25),
+                              
+                                      // sign in button
+                                      MyButton(
+                        onTap: signUserIn,
+                                      ),
+                              
+                                      const SizedBox(height: 50),
+                              
+                                     
+                              
+                                      const SizedBox(height: 250),
+                               Text(
+                        'Calvary Karunya Digital Gospel',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                        ),
+                                      ),
+                                     
+                              
+                                      const SizedBox(height:30),
+                                 
+                              
+                        
+                        
+                          ],
+                        ),
                       ),
                     ),
                   ),

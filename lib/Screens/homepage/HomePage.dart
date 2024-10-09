@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
@@ -29,6 +32,15 @@ class _schedulepageState extends State<HomePage> {
   String greetingMessage = '';
   String _userName = '';
   bool isPlaying = true; // To track play/pause state
+    bool hasError = false; // To track if an error occurred
+  String errorMessage = ''; // Error message to display
+
+     final CollectionReference _imagecollectionRef =
+      FirebaseFirestore.instance.collection('images');
+  final FirebaseStorage _storageRef = FirebaseStorage.instance;
+    List<QueryDocumentSnapshot> _dataList = [];
+  File? _imageFile;
+   List<String> _imageUrls = [];
 
   final List<String> imgList = [
     'https://plus.unsplash.com/premium_photo-1673448391005-d65e815bd026?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGhvdG98ZW58MHx8MHx8fDA%3D',
@@ -36,22 +48,41 @@ class _schedulepageState extends State<HomePage> {
     'https://iso.500px.com/wp-content/uploads/2016/11/stock-photo-159533631.jpg',
     'https://images.pexels.com/photos/821749/pexels-photo-821749.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
   ];
+    
 
   @override
   void initState() {
     super.initState();
+      _vlcPlayerController = VlcPlayerController.network(
+        hwAcc: HwAcc.auto,
+      'rtmp://62.72.43.50/live/jaden',
+      // 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+      autoPlay: true,
+        onInit: () {
+        _vlcPlayerController.addListener(_onPlayerStateChange);
+      },
+    );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     _loadUserName();
     greetingMessage = getGreetingMessage();
     fetchBibleVerse();
+      fetchData();
 
-    _vlcPlayerController = VlcPlayerController.network(
-      'https://media.w3.org/2010/05/sintel/trailer.mp4',
-      autoPlay: true,
-    );
+  
   }
+ void fetchData() async {
+    QuerySnapshot querySnapshot = await _imagecollectionRef.get();
+    setState(() {
+      _dataList = querySnapshot.docs;
+      _imageUrls = querySnapshot.docs
+          .where((doc) => doc['imageUrl'] != null)
+          .map((doc) => doc['imageUrl'] as String)
+          .toList(); // Fetch only image URLs
+    });
+  }
+ 
 
   Future<void> _loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -62,6 +93,7 @@ class _schedulepageState extends State<HomePage> {
 
   @override
   void dispose() {
+     _vlcPlayerController.removeListener(_onPlayerStateChange);
     _vlcPlayerController.dispose();
     super.dispose();
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
@@ -92,6 +124,39 @@ class _schedulepageState extends State<HomePage> {
         // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       }
     });
+  }
+    void _onPlayerStateChange() {
+    if (_vlcPlayerController.value.hasError) {
+      setState(() {
+        hasError = true;
+        errorMessage = 'Server is not available at the moment, \nplease check your Internet Connection\nor \nplease try again later'; // Custom error message
+        _showErrorDialog();
+      });
+    }
+  }
+
+  void _showErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Server Unavailable!!'),
+          content: Text(
+            errorMessage,
+            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                //  SystemNavigator.pop();
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -227,12 +292,14 @@ class _schedulepageState extends State<HomePage> {
                                     controller: _vlcPlayerController,
                                     aspectRatio: 16 / 9,
                                     placeholder: Center(
-                                        child: CircularProgressIndicator()),
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        )),
                                   ),
                                   Positioned(
-                                    bottom: 10,
+                                    bottom: 0,
                                     // left: 16,
-                                    right: 10,
+                                    right: 5,
                                     child: IconButton(
                                       icon: Icon(
                                         isPlaying
@@ -245,8 +312,8 @@ class _schedulepageState extends State<HomePage> {
                                     ),
                                   ),
                                   Positioned(
-                                    bottom: 10,
-                                    left: 10,
+                                    bottom: 0,
+                                    left: 5,
                                     child: IconButton(
                                       icon: Icon(Icons.fullscreen,
                                           color: Colors.white),
@@ -295,30 +362,34 @@ class _schedulepageState extends State<HomePage> {
                           //slider
                           Center(
                             child: CarouselSlider(
-                              options: CarouselOptions(
-                                height: 400.0,
-                                autoPlay: true,
-                                enlargeCenterPage: true,
-                                enableInfiniteScroll: true,
-                                autoPlayAnimationDuration:
-                                    Duration(milliseconds: 800),
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                                pauseAutoPlayOnTouch: true,
-                                scrollDirection: Axis.horizontal,
-                              ),
-                              items: imgList
-                                  .map((item) => Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          child: Image.network(item,
-                                              fit: BoxFit.cover, width: 1000),
-                                        ),
-                                      ))
-                                  .toList(),
-                            ),
+                options: CarouselOptions(
+                  height: 400.0,
+                  enlargeCenterPage: true,
+                  autoPlay: true,
+                  aspectRatio: 16 / 9,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enableInfiniteScroll: true,
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  viewportFraction: 0.8,
+                ),
+                items: _imageUrls.map((url) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          image: DecorationImage(
+                            image: NetworkImage(url),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList()),
+                            
                           ),
                           SizedBox(
                             height: 30,

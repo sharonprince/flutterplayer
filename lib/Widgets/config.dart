@@ -68,7 +68,8 @@ var lightTheme = ThemeData(
 
 
 
-const kPrimaryColor = Color(0xFFFF1031);
+// const kPrimaryColor = Color(0xFFFF1031);
+const kPrimaryColor = Colors.deepPurple;
 const kWhite = Colors.white;
 const kTextColor = Color(0xFF707070);
 const kTextLightColor = Color(0xFF949098);

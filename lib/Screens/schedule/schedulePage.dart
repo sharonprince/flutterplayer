@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterplayer/Screens/mainScreen.dart';
+import 'package:flutterplayer/Widgets/config.dart';
 
 class schedulepage extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class _DataDisplayPageState extends State<schedulepage> {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('schedule');
 
-  List<Map<String, dynamic>> _dataList = [];
+  List<QueryDocumentSnapshot> _dataList = [];
 
   @override
   void initState() {
@@ -20,32 +22,160 @@ class _DataDisplayPageState extends State<schedulepage> {
 
   void fetchData() async {
     QuerySnapshot querySnapshot = await _collectionRef.get();
-    List<Map<String, dynamic>> tempList = querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-
     setState(() {
-      _dataList = tempList;
+      _dataList = querySnapshot.docs;
     });
+  }
+
+  void deleteRecord(String docId) async {
+    await _collectionRef.doc(docId).delete();
+    fetchData(); // Refresh the list after deletion
+  }
+
+  void editRecord(String docId, String newTitle, String newSubtitle) async {
+    await _collectionRef.doc(docId).update({
+      'name': newTitle,
+      'timings': newSubtitle,
+    });
+    fetchData(); // Refresh the list after updating
+  }
+
+  void showEditDialog(BuildContext context, String docId, String currentTitle,
+      String currentSubtitle) {
+    TextEditingController titleController =
+        TextEditingController(text: currentTitle);
+    TextEditingController subtitleController =
+        TextEditingController(text: currentSubtitle);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Record'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(labelText: 'name'),
+              ),
+              TextField(
+                controller: subtitleController,
+                decoration: InputDecoration(labelText: 'timings'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Save'),
+              onPressed: () {
+                editRecord(
+                    docId, titleController.text, subtitleController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
-        title: Text('Data from Firestore'),
-      ),
-      body: _dataList.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _dataList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_dataList[index]['name']),
-                  subtitle: Text(_dataList[index]['timings']),
-                );
+        backgroundColor: kPrimaryColor,
+        title: Text('Program Schedule', style: TextStyle(color:kWhite, fontWeight: FontWeight.bold,fontSize: 23),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: ((context) => MainScreen())));
               },
+              child: Text('Back',style: TextStyle(color:kWhite, fontWeight: FontWeight.bold,fontSize: 15),),
             ),
+          ),
+        ],
+      ),
+      body: Container(
+        child: _dataList.isEmpty
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: _dataList.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> data =
+                      _dataList[index].data() as Map<String, dynamic>;
+                  String docId = _dataList[index].id; // Get document ID
+        
+                  return Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      child: Column(
+                        children: [
+                      
+                          Card(
+                               elevation: 10,
+                                    shadowColor: Colors.black,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                // color: Theme.of(context).scaffoldBackgroundColor,
+                                color: kWhite,
+                                borderRadius: BorderRadius.circular(15),
+
+                              ),
+                              child: ListTile(
+                                title: Text(data['name'],
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black)),
+                                // subtitle: Text("   "),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                     Text("-",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: kWhite,
+                                        ),),
+                                    Text(data['timings'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),),
+                                    // IconButton(
+                                    //   icon: Icon(Icons.edit, color: Colors.blue),
+                                    //   onPressed: () {
+                                    //     showEditDialog(context, docId, data['name'], data['timings']);
+                                    //   },
+                                    // ),
+                                    // IconButton(
+                                    //   icon: Icon(Icons.delete, color: Colors.red),
+                                    //   onPressed: () {
+                                    //     deleteRecord(docId); // Delete record when icon is pressed
+                                    //   },
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }
